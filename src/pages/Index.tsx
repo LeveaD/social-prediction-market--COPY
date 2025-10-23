@@ -7,7 +7,6 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Shield, TrendingUp, Users, Zap } from "lucide-react";
-import heroBg from "@/assets/hero-bg.jpg";
 
 const Index = () => {
   const [activeTab, setActiveTab] = useState<"trending" | "new" | "ending">("trending");
@@ -70,11 +69,6 @@ const Index = () => {
       <section className="relative pt-24 pb-16 overflow-hidden">
         <div 
           className="absolute inset-0 opacity-20"
-          style={{
-            backgroundImage: `url(${heroBg})`,
-            backgroundSize: 'cover',
-            backgroundPosition: 'center',
-          }}
         />
         <div className="absolute inset-0 bg-gradient-to-b from-background/50 via-background/80 to-background" />
         
@@ -82,7 +76,7 @@ const Index = () => {
           <div className="max-w-4xl mx-auto text-center space-y-6">
             <Badge variant="trust" className="mb-4">
               <Shield className="w-3 h-3 mr-1" />
-              Sybil-Resistant • AI-Monitored
+              Sybil-Resistant
             </Badge>
             
             <h1 className="text-5xl md:text-7xl font-bold mb-6">

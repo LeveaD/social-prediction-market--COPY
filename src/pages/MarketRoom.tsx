@@ -127,7 +127,7 @@ const MarketRoom = () => {
                     <span className="text-sm text-muted-foreground">Current Odds</span>
                     <Badge variant="trust">
                       <Shield className="w-3 h-3 mr-1" />
-                      AI Monitored
+                      Sybil-Resistant
                     </Badge>
                   </div>
                   <Progress value={market.odds.yes} className="h-2" />

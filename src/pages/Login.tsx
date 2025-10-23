@@ -93,7 +93,7 @@ const Login = () => {
                 </Button>
                 <div className="flex items-center gap-2 text-xs text-muted-foreground">
                   <Sparkles className="w-3 h-3 text-accent" />
-                  <span>AI-powered spam detection enabled</span>
+                  <span>Spam detection enabled</span>
                 </div>
               </TabsContent>
               
@@ -128,7 +128,7 @@ const Login = () => {
                 <Shield className="w-5 h-5 text-accent" />
               </div>
               <div className="space-y-0.5">
-                <h3 className="font-semibold text-sm">Protected by AI</h3>
+                <h3 className="font-semibold text-sm">Enhanced Security</h3>
                 <p className="text-xs text-muted-foreground">
                   Real-time bot detection and sybil resistance for authentic predictions
                 </p>
