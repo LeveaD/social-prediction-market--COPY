@@ -1,21 +1,15 @@
 import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn } from 'typeorm';
 
 @Entity()
-export class Message {
+export class ModerationQueue {
   @PrimaryGeneratedColumn()
   id!: number;
 
   @Column()
-  marketId!: string;
-
-  @Column()
-  userId!: string;
+  messageId!: number;
 
   @Column('text')
-  text!: string;
-
-  @Column({ default: 'pending' })
-  status!: string;
+  reason!: string;
 
   @CreateDateColumn()
   createdAt!: Date;

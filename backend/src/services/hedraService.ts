@@ -4,8 +4,15 @@ const operatorId = process.env.HEDERA_OPERATOR_ID;
 const operatorKey = process.env.HEDERA_OPERATOR_KEY;
 
 const client = Client.forTestnet();
-if (operatorId && operatorKey) {
-  client.setOperator(operatorId, operatorKey);
+if (operatorId && operatorKey && typeof operatorKey === 'string' && !operatorKey.includes('__PLACEHOLDER')) {
+  try {
+    // PrivateKey.fromString will validate the key format and avoid runtime errors
+    client.setOperator(operatorId, PrivateKey.fromString(operatorKey));
+  } catch (e: any) {
+    console.warn('Invalid Hedera operator key provided; skipping operator set', e?.message || e);
+  }
+} else {
+  console.warn('Hedera operator not configured; running in degraded mode');
 }
 
 export async function issueVerification(userId: string) {

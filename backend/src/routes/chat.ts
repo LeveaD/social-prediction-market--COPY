@@ -1,10 +1,10 @@
-import { Router } from 'express';
+import express from 'express';
 import { handleChatMessage } from '../controllers/chatController';
 
-const router = Router();
+const router = express.Router();
 
 // POST /api/chat/:marketId
-router.post('/:marketId', async (req, res) => {
+router.post('/:marketId', async (req: any, res: any) => {
   const marketId = req.params.marketId;
   const { userId, text } = req.body;
   try {

@@ -1,9 +1,9 @@
-import { Router } from 'express';
+import express from 'express';
 import { handleEnvoiInbound } from '../services/envoiService';
 
-const router = Router();
+const router = express.Router();
 
-router.post('/webhook', async (req, res) => {
+router.post('/webhook', async (req: any, res: any) => {
   // Validate signature if configured
   const event = req.body;
   await handleEnvoiInbound(event);
