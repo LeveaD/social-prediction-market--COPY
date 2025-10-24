@@ -6,8 +6,8 @@ export async function aiClassify(payload: {text:string, userId?:string, marketId
   try {
     const r = await axios.post(AI_URL, payload, { timeout: 3000 });
     return r.data; // expects {score: float, label: string, explanation?: string}
-  } catch (err) {
-    console.error('AI service failed', err.message);
+  } catch (err: any) {
+    console.error('AI service failed', err?.message || err);
     // fail-open: low score, but queue for review
     return { score: 0.0, label: 'unknown', explanation: 'ai_error' };
   }

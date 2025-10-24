@@ -20,8 +20,20 @@ services:
     restart: unless-stopped
     depends_on:
       - db
+      - ai
     environment:
-      DATABASE_URL: postgres://postgres:mypassword@db:5432/prediction_market
+      # Database (connect to DB service inside compose)
+      PG_HOST: db
+      PG_PORT: 5432
+      PG_USER: postgres
+      PG_PASSWORD: mypassword
+      PG_DB: prediction_market
+      # AI service inside compose
+      AI_SERVICE_URL: http://ai:5000/classify
+      # Oracle / chain settings (placeholders)
+      RPC_URL: https://rpc.goerli.example
+      PRIVATE_KEY: __PLACEHOLDER__
+      MARKET_CONTRACT_ADDRESS: __PLACEHOLDER__
       NODE_ENV: development
     ports:
       - "5000:5000"
@@ -35,9 +47,22 @@ services:
     depends_on:
       - backend
     ports:
-      - "5173:5173"
+      # Vite inside container listens on 8080; map it to host 5173 for local dev
+      - "5173:8080"
     environment:
-      VITE_API_URL: "http://localhost:5000"
+      # When running in docker-compose, frontend should talk to backend service name
+      VITE_API_URL: "http://backend:5000"
+
+  ai:
+    build:
+      context: ./ai
+      dockerfile: Dockerfile
+    container_name: prediction_ai
+    restart: unless-stopped
+    ports:
+      - "5001:5000"
+    environment:
+      PORT: 5000
 
 volumes:
   pg_data:

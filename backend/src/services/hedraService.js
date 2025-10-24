@@ -38,64 +38,21 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.issueVerification = issueVerification;
 exports.verifyCallback = verifyCallback;
-exports.resolveMarketOnchain = resolveMarketOnchain;
-var sdk_1 = require("@hashgraph/sdk");
-var operatorId = process.env.HEDERA_OPERATOR_ID;
-var operatorKey = process.env.HEDERA_OPERATOR_KEY;
-// create Hedera client from env
-var client = process.env.HEDERA_NETWORK === 'mainnet' ? sdk_1.Client.forMainnet() : sdk_1.Client.forTestnet();
+const { Client } = require('@hashgraph/sdk');
+const operatorId = process.env.HEDERA_OPERATOR_ID;
+const operatorKey = process.env.HEDERA_OPERATOR_KEY;
+const client = Client.forTestnet();
 if (operatorId && operatorKey) {
     client.setOperator(operatorId, operatorKey);
 }
-function issueVerification(userId) {
-    return __awaiter(this, void 0, void 0, function () {
-        var challenge;
-        return __generator(this, function (_a) {
-            challenge = "challenge:".concat(userId, ":").concat(Date.now());
-            // store to DB (not shown)
-            return [2 /*return*/, { challenge: challenge, url: "https://your-frontend/verify?challenge=".concat(encodeURIComponent(challenge)) }];
-        });
-    });
+async function issueVerification(userId) {
+    const challenge = `challenge:${userId}:${Date.now()}`;
+    // store to DB (not shown)
+    return { challenge, url: `https://your-frontend/verify?challenge=${encodeURIComponent(challenge)}` };
 }
-function verifyCallback(payload) {
-    return __awaiter(this, void 0, void 0, function () {
-        return __generator(this, function (_a) {
-            // validate payload signature, set user.verified = true in DB
-            // stub returns true for now
-            return [2 /*return*/, true];
-        });
-    });
+async function verifyCallback(payload) {
+    // validate payload signature, set user.verified = true in DB
+    // stub returns true for now
+    return true;
 }
-/**
- * Call the on-chain PredictionMarket.resolveMarket(marketId, winningOutcome)
- * Requires environment variable PREDICTION_MARKET_CONTRACT_ID to be set to the
- * Hedera contract ID (e.g. 0.0.12345 or 0xabc... depending on deployment)
- */
-function resolveMarketOnchain(marketId, winningOutcome) {
-    return __awaiter(this, void 0, void 0, function () {
-        var contractId, functionParams, tx, receipt;
-        return __generator(this, function (_a) {
-            switch (_a.label) {
-                case 0:
-                    contractId = process.env.PREDICTION_MARKET_CONTRACT_ID;
-                    if (!contractId) {
-                        throw new Error('PREDICTION_MARKET_CONTRACT_ID not set in env');
-                    }
-                    functionParams = new sdk_1.ContractFunctionParameters()
-                        .addUint256(marketId)
-                        .addBool(winningOutcome);
-                    return [4 /*yield*/, new sdk_1.ContractExecuteTransaction()
-                            .setContractId(contractId)
-                            .setGas(200000)
-                            .setFunction('resolveMarket', functionParams)
-                            .execute(client)];
-                case 1:
-                    tx = _a.sent();
-                    return [4 /*yield*/, tx.getReceipt(client)];
-                case 2:
-                    receipt = _a.sent();
-                    return [2 /*return*/, receipt];
-            }
-        });
-    });
-}
+exports.default = { issueVerification, verifyCallback };
