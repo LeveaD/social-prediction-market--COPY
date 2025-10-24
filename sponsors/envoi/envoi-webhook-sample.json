@@ -1,0 +1,26 @@
+[
+  {
+    "eventName": "PredictionPlaced",
+    "contractAddress": "0.0.12345",
+    "transactionHash": "0xabcde12345",
+    "blockNumber": 123456,
+    "timestamp": 1698144000000,
+    "args": {
+      "marketId": 0,
+      "better": "0x1111111111111111111111111111111111111111",
+      "outcome": true,
+      "amount": "1000000000000000000"
+    }
+  },
+  {
+    "eventName": "MarketResolved",
+    "contractAddress": "0.0.12345",
+    "transactionHash": "0xfeedbeef",
+    "blockNumber": 123500,
+    "timestamp": 1698147600000,
+    "args": {
+      "marketId": 0,
+      "winningOutcome": true
+    }
+  }
+]

@@ -1,0 +1,23 @@
+{
+  "name": "prediction-market-envoi",
+  "network": "hedera-testnet",
+  "contracts": [
+    {
+      "name": "PredictionMarket",
+      "address": "{{PREDICTION_MARKET_ADDRESS}}",
+      "events": [
+        "PredictionPlaced",
+        "MarketResolved",
+        "PayoutTransferred"
+      ]
+    }
+  ],
+  "webhook": {
+    "url": "${ENVOI_WEBHOOK_TARGET}",
+    "auth": {
+      "type": "header",
+      "key": "x-api-key",
+      "value": "${ENVOI_API_KEY}"
+    }
+  }
+}
