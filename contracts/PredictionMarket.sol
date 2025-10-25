@@ -32,19 +32,18 @@ contract PredictionMarket is Ownable {
     event MarketResolved(uint256 indexed marketId, bool winningOutcome);
     event PayoutTransferred(address indexed user, uint256 amount);
 
-    constructor(address reputationAddress) Ownable(msg.sender) {
+    constructor(address reputationAddress) Ownable() {
         reputationContract = Reputation(reputationAddress);
     }
 
     function createMarket(string memory _question, uint256 _duration) public onlyOwner {
         uint256 marketId = markets.length;
-        markets.push(Market({
-            question: _question,
-            endsAt: block.timestamp + _duration,
-            state: State.Open,
-            totalYesAmount: 0,
-            totalNoAmount: 0
-        }));
+        Market storage newMarket = markets.push();
+        newMarket.question = _question;
+        newMarket.endsAt = block.timestamp + _duration;
+        newMarket.state = State.Open;
+        newMarket.totalYesAmount = 0;
+        newMarket.totalNoAmount = 0;
         emit MarketCreated(marketId, _question, block.timestamp + _duration);
     }
 
