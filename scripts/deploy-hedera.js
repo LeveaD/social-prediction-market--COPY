@@ -1,4 +1,4 @@
-const { Client, AccountId, PrivateKey, ContractCreateTransaction, ContractExecuteTransaction, ContractFunctionParameters, FileCreateTransaction, FileAppendTransaction } = require('@hashgraph/sdk');
+const { Client, AccountId, PrivateKey, ContractCreateTransaction, ContractExecuteTransaction, ContractFunctionParameters, FileCreateTransaction, FileAppendTransaction, Hbar } = require('@hashgraph/sdk');
 const fs = require('fs');
 const path = require('path');
 
@@ -38,7 +38,7 @@ async function deployContract() {
 
     const reputationContractCreateTx = new ContractCreateTransaction()
       .setBytecodeFileId(reputationBytecodeFileId)
-      .setGas(500000);
+      .setGas(2000000);
 
     const reputationContractCreateSubmit = await reputationContractCreateTx.execute(client);
     const reputationContractCreateRx = await reputationContractCreateSubmit.getReceipt(client);
@@ -49,6 +49,7 @@ async function deployContract() {
     // Now deploy the PredictionMarket contract with the Reputation contract address
     console.log('Deploying PredictionMarket contract...');
     const contractBytecode = fs.readFileSync(path.join(__dirname, '../artifacts/contracts/PredictionMarket.sol/PredictionMarket.json'));
+
     const contractJson = JSON.parse(contractBytecode);
     const bytecode = contractJson.bytecode;
 
@@ -66,7 +67,8 @@ async function deployContract() {
     // Deploy the contract with constructor parameters
     const contractCreateTx = new ContractCreateTransaction()
       .setBytecodeFileId(bytecodeFileId)
-      .setGas(1000000)
+      .setGas(15000000)
+      .setMaxTransactionFee(new Hbar(20))
       .setConstructorParameters(new ContractFunctionParameters().addAddress(reputationContractId.toSolidityAddress()));
 
     const contractCreateSubmit = await contractCreateTx.execute(client);
