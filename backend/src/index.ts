@@ -19,7 +19,4 @@ async function main(){
   app.listen(PORT, () => console.log(`Backend listening on ${PORT}`));
 }
 
-main().catch(err => {
-  console.error('Failed to start', err);
-  process.exit(1);
-});
+main().catch(console.error);

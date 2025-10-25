@@ -9,6 +9,8 @@
     "solidity-coverage": "^0.8.5"
   },
   "dependencies": {
-    "@hashgraph/sdk": "^2.75.0"
+    "@hashgraph/sdk": "^2.75.0",
+    "axios": "^1.12.2",
+    "dotenv": "^17.2.3"
   }
 }

@@ -9,8 +9,7 @@ contract Reputation is Ownable {
 
     event ReputationChanged(address user, uint256 newReputation);
 
-    // Ownable's constructor will set the owner to msg.sender automatically.
-    constructor() {}
+    constructor() Ownable(msg.sender) {}
 
     function getReputation(address user) public view returns (uint256) {
         return reputations[user];

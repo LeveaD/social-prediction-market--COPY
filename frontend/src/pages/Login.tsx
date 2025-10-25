@@ -61,16 +61,26 @@ const Login = () => {
                 </TabsTrigger>
               </TabsList>
               
-              <TabsContent value="wallet" className="space-y-4 pt-4">
+                <TabsContent value="wallet" className="space-y-4 pt-4">
                 <div className="space-y-2">
                   <p className="text-sm text-muted-foreground">
                     Connect your Web3 wallet to sign in securely
                   </p>
                 </div>
-                <Button variant="glow" className="w-full" size="lg">
-                  <Wallet className="w-5 h-5" />
-                  Connect Wallet
-                </Button>
+                {/* WalletConnect component handles HashConnect pairing + signature flow */}
+                <div>
+                  {/* Lazy-load to avoid bundling HashConnect if not needed */}
+                  {/* eslint-disable-next-line @typescript-eslint/no-var-requires */}
+                  {typeof window !== 'undefined' ? (
+                    // Dynamically import component to avoid SSR issues
+                    React.createElement(require('../components/WalletConnect').default)
+                  ) : (
+                    <Button variant="glow" className="w-full" size="lg">
+                      <Wallet className="w-5 h-5" />
+                      Connect Wallet
+                    </Button>
+                  )}
+                </div>
                 <div className="flex items-center gap-2 text-xs text-muted-foreground">
                   <Shield className="w-3 h-3 text-accent" />
                   <span>Supports MetaMask, WalletConnect, Coinbase Wallet</span>

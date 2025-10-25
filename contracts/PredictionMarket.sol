@@ -28,27 +28,23 @@ contract PredictionMarket is Ownable {
     Market[] public markets;
 
     event MarketCreated(uint256 indexed marketId, string question, uint256 endsAt);
-    // Keep BetPlaced for backward compatibility with tests; also emit PredictionPlaced for Envio
     event BetPlaced(uint256 indexed marketId, address indexed better, bool outcome, uint256 amount);
-    event PredictionPlaced(uint256 indexed marketId, address indexed better, bool outcome, uint256 amount);
     event MarketResolved(uint256 indexed marketId, bool winningOutcome);
     event PayoutTransferred(address indexed user, uint256 amount);
 
-    constructor(address reputationAddress) {
+    constructor(address reputationAddress) Ownable(msg.sender) {
         reputationContract = Reputation(reputationAddress);
     }
 
     function createMarket(string memory _question, uint256 _duration) public onlyOwner {
-        // Cannot initialize mappings in a struct literal. Push an empty Market
-        markets.push();
-        uint256 marketId = markets.length - 1;
-        Market storage market = markets[marketId];
-        market.question = _question;
-        market.endsAt = block.timestamp + _duration;
-        market.state = State.Open;
-        market.totalYesAmount = 0;
-        market.totalNoAmount = 0;
-
+        uint256 marketId = markets.length;
+        markets.push(Market({
+            question: _question,
+            endsAt: block.timestamp + _duration,
+            state: State.Open,
+            totalYesAmount: 0,
+            totalNoAmount: 0
+        }));
         emit MarketCreated(marketId, _question, block.timestamp + _duration);
     }
 
@@ -75,9 +71,7 @@ contract PredictionMarket is Ownable {
             market.totalNoAmount += msg.value;
         }
 
-        // Emit both events for compatibility and for the Envio indexer
         emit BetPlaced(marketId, msg.sender, outcome, msg.value);
-        emit PredictionPlaced(marketId, msg.sender, outcome, msg.value);
     }
 
     function resolveMarket(uint256 marketId, bool winningOutcome) public onlyOwner {
