@@ -8,6 +8,12 @@ export class User {
   @Column({ nullable: true })
   displayName?: string;
 
+  @Column({ default: false })
+  verified!: boolean;
+
+  @Column({ nullable: true })
+  hederaChallenge?: string;
+
   @CreateDateColumn()
   createdAt!: Date;
 }

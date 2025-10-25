@@ -46,7 +46,7 @@ const WalletConnect: React.FC = () => {
     if (!pairedAccount) return setStatus('no-account');
     try {
       setStatus('requesting-nonce');
-      const nonceResp = await fetch(`/api/auth/nonce?accountId=${encodeURIComponent(pairedAccount)}`);
+      const nonceResp = await fetch(`http://localhost:5001/api/auth/nonce?accountId=${encodeURIComponent(pairedAccount)}`);
       const { nonce } = await nonceResp.json();
 
       setStatus('signing');
@@ -77,7 +77,7 @@ const WalletConnect: React.FC = () => {
       }
 
       setStatus('verifying');
-      const verifyResp = await fetch('/api/auth/verify', {
+      const verifyResp = await fetch('http://localhost:5001/api/auth/verify', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ accountId: pairedAccount, publicKey: pubKeyHex, signature: signatureHex, nonce }),

@@ -5,11 +5,12 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { 
-  Wallet, 
-  Mail, 
-  Phone, 
-  Shield, 
+import WalletConnect from "@/components/WalletConnect";
+import {
+  Wallet,
+  Mail,
+  Phone,
+  Shield,
   Activity,
   Sparkles
 } from "lucide-react";
@@ -68,19 +69,7 @@ const Login = () => {
                   </p>
                 </div>
                 {/* WalletConnect component handles HashConnect pairing + signature flow */}
-                <div>
-                  {/* Lazy-load to avoid bundling HashConnect if not needed */}
-                  {/* eslint-disable-next-line @typescript-eslint/no-var-requires */}
-                  {typeof window !== 'undefined' ? (
-                    // Dynamically import component to avoid SSR issues
-                    React.createElement(require('../components/WalletConnect').default)
-                  ) : (
-                    <Button variant="glow" className="w-full" size="lg">
-                      <Wallet className="w-5 h-5" />
-                      Connect Wallet
-                    </Button>
-                  )}
-                </div>
+                <WalletConnect />
                 <div className="flex items-center gap-2 text-xs text-muted-foreground">
                   <Shield className="w-3 h-3 text-accent" />
                   <span>Supports MetaMask, WalletConnect, Coinbase Wallet</span>
